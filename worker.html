@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Web Worker</title>
+</head>
+<body>
+
+<header>
+  <h2>Web Worker</h2>
+</header>
+<main>
+  <pre id="output"></pre>
+</main>
+
+<script>
+ let output = document.getElementById('output');
+ let worker;
+ document.addEventListener('DOMContentLoaded', init);
+ function init() {
+   worker = new Worker('web-worker.js');
+   worker.addEventListener('message', workerMessaged);
+   worker.addEventListener('error', workerError);
+
+   worker.postMessage('Get started');
+   output.addEventListener('click', () => {
+     worker.postMessage('send another message');   
+    })
+  }
+
+  function workerMessaged (ev){
+    const { data } = ev 
+    output.textContent += data + '\n'
+  }
+
+  function workerError(err){
+    console.log(err)
+  }
+</script>
+
+</body>
+</html>
